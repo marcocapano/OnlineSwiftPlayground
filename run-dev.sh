@@ -1,25 +1,25 @@
 #!/bin/bash
+SWIFT_VERSION="4.0.3-RELEASE"
+BUILD_TOOLCHAIN_SWIFT="Toolchains/swift-$SWIFT_VERSION.xctoolchain/usr/bin/swift"
 
-function program_is_installed {
-  # set to 1 initially
-  local return_=1
-  # set to 0 if not found
-  type $1 >/dev/null 2>&1 || { local return_=0; }
-  # return value
-  echo "$return_"
-}
+. bootstrap.sh
 
-if [ $(program_is_installed xcrun) == 1 ]; then
-    xcrun swift build -c debug -Xswiftc -DDEBUG
-    xcrun swift run -c debug -Xswiftc -DDEBUG &
-else
-    swift build -c debug -Xswiftc -DDEBUG
-    swift run -c debug -Xswiftc -DDEBUG &
-fi
+# if [ $(program_is_installed xcrun) == 1 ]; then
+    # Generate Xcode projects
+    # $BUILD_TOOLCHAIN_SWIFT package generate-xcodeproj
+    # $BUILD_TOOLCHAIN_SWIFT package --package-path OnlinePlayground generate-xcodeproj
+# fi
 
-if [ $(program_is_installed npm) == 1 ]; then
-    $(npm bin)/webpack -w
-fi
+# Build OnlinePlayground
+Toolchains/swift-4.0.3-RELEASE.xctoolchain/usr/bin/swift build --package-path OnlinePlayground --static-swift-stdlib --build-path OnlinePlayground/.build/swift-4.0.3-RELEASE -c debug -Xswiftc -DDEBUG
+# Toolchains/swift-4.1-RELEASE.xctoolchain/usr/bin/swift build --package-path OnlinePlayground --static-swift-stdlib --build-path .build/swift-4.1-RELEASE -c debug -Xswiftc -DDEBUG
 
-killall -9 PlaygroundServer
+# Run
+# Toolchains/swift-$SWIFT_VERSION.xctoolchain/usr/bin/swift run -c debug --static-swift-stdlib --build-path .build/swift-$SWIFT_VERSION -Xswiftc -DDEBUG &
+
+# if [ $(program_is_installed npm) == 1 ]; then
+#     $(npm bin)/webpack -w
+# fi
+
+# killall -9 PlaygroundServer
 

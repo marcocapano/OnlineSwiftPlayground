@@ -10,22 +10,16 @@ let dependencies:[Package.Dependency] = [
     .package(url: "https://github.com/IBM-Swift/Kitura-StencilTemplateEngine.git", from: "1.8.4"),
     .package(url: "https://github.com/apple/swift-package-manager.git", from: "0.1.0"),
     .package(url: "https://github.com/IBM-Swift/Kitura-CredentialsGitHub.git", from: "2.1.0"),
-    .package(url: "https://github.com/krzyzanowskim/ZIPFoundation.git", .branch("CZlib")),
-    .package(url: "https://github.com/johnsundell/xgen", from: "2.0.1"),
-    // 3rd party dependency
-    .package(url: "https://github.com/krzyzanowskim/CryptoSwift.git", from: "0.8.0")
 ]
 
 var targets:[Target] = [
-    .target(name: "PlaygroundServer", dependencies: [ .target(name: "Application"), .target(name: "OnlinePlayground"), "Kitura" , "HeliumLogger"]),
-    .target(name: "Application", dependencies: [ "Kitura", "Kitura-WebSocket", "Configuration", "CloudEnvironment", "Utility", "CredentialsGitHub", "KituraStencil", "ZIPFoundation", "Xgen"], exclude: ["DerivedData","static","node_modules"]),
-    .target(name: "OnlinePlayground", dependencies: ["CryptoSwift"]), // Link custom modules here
+    .target(name: "PlaygroundServer", dependencies: [ .target(name: "Application"), "Kitura" , "HeliumLogger"]),
+    .target(name: "Application", dependencies: [ "Kitura", "Kitura-WebSocket", "Configuration", "CloudEnvironment", "Utility", "CredentialsGitHub", "KituraStencil"], exclude: ["DerivedData","static","node_modules"]),
     .testTarget(name: "ApplicationTests" , dependencies: [.target(name: "Application"), "Kitura","HeliumLogger" ])
 ]
 
 var products: [Product] = [
-    .executable(name: "PlaygroundServer", targets: ["PlaygroundServer"]),
-    .library(name: "OnlinePlayground", type: .static, targets: ["OnlinePlayground"])
+    .executable(name: "PlaygroundServer", targets: ["PlaygroundServer"])
 ]
 
 let package = Package(
